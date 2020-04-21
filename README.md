@@ -12,7 +12,7 @@ This repository accompanies the article "Optimal, near-optimal, and robust epide
 ## License and citation information
 If you use the code or data provided here, please make sure to do so in light of the project [license](LICENSE.txt) and please cite our work as below:
 
-- D.H. Morris, F.W. Rossine et al. Optimal, near-optimal, and robust epidemic control. Mar 2020.
+- D.H. Morris, F.W. Rossine et al. Optimal, near-optimal, and robust epidemic control. *OSF preprint*. Mar 2020. DOI:[10.31219/osf.io/9gr7q](https://doi.org/10.31219/osf.io/9gr7q)
 
 Bibtex record:
 ```

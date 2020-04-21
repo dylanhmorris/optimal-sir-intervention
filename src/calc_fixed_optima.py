@@ -30,7 +30,9 @@ def main(outpath = None, taus = None,
             "tau",
             "t_i",
             "sigma",
-            "Imax"]
+            "Imax",
+            "S_i",
+            "R_e_i"]
         writer.writerow(header_row)
     
     for tau in taus:
@@ -45,6 +47,8 @@ def main(outpath = None, taus = None,
             t_i = oi.t_of_S(S_i, R0, gamma,
                             I0 = I0,
                             Rec0 = Rec0)[0]
+            
+            R_e_i = R0 * S_i * sigma
 
             Imax = oi.Imax_of_S_i_b(
                 S_i,
@@ -53,7 +57,7 @@ def main(outpath = None, taus = None,
                 gamma,
                 tau)
 
-            writer.writerow([tau, t_i, sigma, Imax])
+            writer.writerow([tau, t_i, sigma, Imax, S_i, R_e_i])
 
 
 if __name__ == "__main__":

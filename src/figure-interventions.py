@@ -12,6 +12,8 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import matplotlib as mpl
+
 import matplotlib.lines as mlines
 from matplotlib.ticker import FormatStrFormatter
 
@@ -118,6 +120,7 @@ def main(path_to_fixed,
     null_dashes = (3, 3)
     timecourse_alpha = 0.9
     tau_plot_darkness = 0.8
+    tau_crash_lw = mpl.rcParams["lines.linewidth"] * 0.7
     
     ## set up legend
     color_vals = np.linspace(0.8, 0.3, len(taus))
@@ -131,6 +134,20 @@ def main(path_to_fixed,
 
     ## calculate and plot non intervention results
     null_time, null_result = covid_sir.integrate_null(t_sim_max)
+
+    ## plot tau crash below plots of tau
+    tau_crash = oi.tau_crash(covid_sir.R0) / covid_sir.gamma
+    plots["imax"].axvline(tau_crash,
+                          color = ps.full_suppression_cmap(
+                              tau_plot_darkness),
+                          lw = tau_crash_lw,
+                          linestyle = "dotted")
+    
+    plots["ti"].axvline(tau_crash,
+                        color = ps.full_suppression_cmap(
+                            tau_plot_darkness),
+                        lw = tau_crash_lw,
+                        linestyle = "dotted")
 
     for plotname in ["mc-time-timecourse",
                      "fixed-timecourse",

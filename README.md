@@ -16,14 +16,16 @@ If you use the code or data provided here, please make sure to do so in light of
 
 Bibtex record:
 ```
-@electronic{morris2020optimal,
+@article{morris2020optimal,
     Author = {Morris, Dylan H. and
     Rossine, Fernando W. and 
     Plotkin, Joshua B. and
     Levin, Simon A.},
     Title = {Optimal, near-optimal, and robust epidemic control},
     Date = {2020},
-    doi = {}
+    journal = {arXiv and OSF preprint},
+    doi = {10.31219/osf.io/9gr7q},
+    url = {https://arxiv.org/abs/2004.02209}
 }
 ```
 

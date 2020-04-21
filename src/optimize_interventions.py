@@ -10,6 +10,7 @@
 
 from scipy.optimize import minimize
 from scipy.optimize import minimize_scalar
+from scipy.optimize import root
 import numpy as np
 from scipy.special import lambertw
 from scipy.integrate import odeint
@@ -101,6 +102,20 @@ def calc_Sf_opt(R0,
     else:
         return np.array([np.nan, np.nan])
 
+
+def tau_crash(R0):
+
+    def to_solve(x):
+        return x * (np.log(x) + x * np.log(R0 * x) - R0 * x) + 1
+    
+    x = root(to_solve, 0.5)
+    if x.success:
+        return -np.log(1 - float(x.x))
+    else:
+        return np.nan
+
+def full_sup_asymptote(R0):
+    return 0.5 + (1 / (R0 * 2)) * (np.log(1/R0) - 1)
 
 def calc_Sf_opt_brute(
         R0,

@@ -69,7 +69,7 @@ PLOT_DEPS = $(PLOTTING_STYLE) $(NUMERICS)
 
 
 ## figure targets
-FIGURE_NAMES = figure-interventions.$(FIGEXT) figure-mistimed.$(FIGEXT) figure-parameter-sweep.$(FIGEXT) figure-parameter-sweep-fixed.$(FIGEXT)
+FIGURE_NAMES = figure-interventions.$(FIGEXT) figure-mistimed.$(FIGEXT) figure-parameter-sweep.$(FIGEXT) figure-parameter-sweep-fixed.$(FIGEXT) figure-f-sigma-of-tau.$(FIGEXT)
 FIGURE_PATHS = $(addprefix $(FIGURES)/, $(FIGURE_NAMES))
 
 ## output targets
@@ -96,6 +96,9 @@ $(FIGURES)/%.$(FIGEXT): $(SRC)/%.$(SRCEXT) $(PLOT_DEPS)
 	./$< $@
 
 $(FIGURES)/figure-interventions.$(FIGEXT): $(SRC)/figure-interventions.$(SRCEXT) $(TAU_SWEEP) $(PLOT_DEPS)
+	./$< $(TAU_SWEEP) $@
+
+$(FIGURES)/figure-f-sigma-of-tau.$(FIGEXT): $(SRC)/figure-f-sigma-of-tau.$(SRCEXT) $(TAU_SWEEP) $(PLOT_DEPS)
 	./$< $(TAU_SWEEP) $@
 
 $(FIGURES)/figure-parameter-sweep.$(FIGEXT): $(SRC)/figure-parameter-sweep.$(SRCEXT) $(HEATMAP_MC_SWEEPS) $(PLOT_DEPS)

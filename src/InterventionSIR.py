@@ -168,8 +168,8 @@ class Intervention():
     
         self.repertoire = {
             "fixed": self.fixed_b,
-            "mc-time": self.maintain_contain_time,
-            "mc-state": self.maintain_contain_state,
+            "maintain-suppress-time": self.maintain_suppress_time,
+            "maintain-suppress-state": self.maintain_suppress_state,
             "full-suppression": self.fixed_b}
 
     def __call__(self,
@@ -201,14 +201,14 @@ class Intervention():
             result = 1
         return result
 
-    def maintain_contain_time(self,
+    def maintain_suppress_time(self,
                               time,
                               beta,
                               gamma,
                               S,
                               I):
         """
-        Variable maintain/contain
+        Variable maintain/suppress
         intervention tuned by 
         current time
         """
@@ -224,14 +224,14 @@ class Intervention():
             result = 1
         return result
 
-    def maintain_contain_state(self,
+    def maintain_suppress_state(self,
                                time,
                                beta,
                                gamma,
                                S,
                                I):
         """
-        Variable maintain/contain
+        Variable maintain/suppress
         intervention tuned by 
         current state of the system
         (S(t), I(t))
@@ -288,7 +288,7 @@ def make_state_tuned_variable_b_func(tau, t_i, f):
         tau = tau,
         t_i = t_i,
         f = f,
-        strategy = "mc-state")
+        strategy = "maintain-suppress-state")
 
 def make_time_tuned_variable_b_func(tau,
                                     t_i,
@@ -308,7 +308,7 @@ def make_time_tuned_variable_b_func(tau,
         t_i = t_i,
         S_i_expected = S_i_expected,
         I_i_expected = I_i_expected,
-        strategy = "mc-time")
+        strategy = "maintain-suppress-time")
 
 
 
@@ -348,7 +348,7 @@ def check_gamma(gamma,
 
     model.gamma = gamma
         
-    if strategy in ["mc-time", "mc-state"]:
+    if strategy in ["maintain-suppress-time", "maintain-suppress-state"]:
         opt_S_i, opt_f = oi.calc_Sf_opt(
             R0,
             gamma * tau)
@@ -359,12 +359,12 @@ def check_gamma(gamma,
             gamma,
             tau)
         t_i = model.t_of_S(fixed_S_i)[0]
-    elif strategy in ["hammer"]:
-        hammer_S_i = oi.calc_S_var_opt(
+    elif strategy in ["full-suppression"]:
+        full_supp_S_i = oi.calc_S_var_opt(
             R0,
             gamma * tau,
             0)
-        t_i = model.t_of_S(hammer_S_i)[0]
+        t_i = model.t_of_S(full_supp_S_i)[0]
     if verbose:
         print("strategy:", strategy)
         print("gamma:", gamma)

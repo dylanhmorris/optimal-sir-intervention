@@ -43,7 +43,7 @@ fixed_cmap = plt.cm.Blues
 full_suppression_cmap = plt.cm.Reds
 cmap_dict = {
     "optimal": opt_cmap,
-    "mc-time": opt_cmap,
+    "maintain-suppress-time": opt_cmap,
     "fixed": fixed_cmap,
     "full-suppression": full_suppression_cmap}
 
@@ -96,7 +96,7 @@ def setup_multipanel(fig, plot_positions,
                      letter_loc=None,
                      verbose=False,
                      letters=None,
-                     upper=True):
+                     upper=False):
 
     if gridspec is None:
         n_rows = np.max([plot_dict["row"] for plot_dict in plot_positions])

@@ -40,7 +40,7 @@ def setup_figure():
 
     
     plot_positions = [
-        {"name": "mc-time-timecourse",
+        {"name": "maintain-suppress-time-timecourse",
          "row": timecourse_row,
          "col": opt_col,
          "sharex": None,
@@ -49,38 +49,38 @@ def setup_figure():
         {"name": "fixed-timecourse",
          "row": timecourse_row,
          "col": fixed_col,
-         "sharex": "mc-time-timecourse",
-         "sharey": "mc-time-timecourse"},
+         "sharex": "maintain-suppress-time-timecourse",
+         "sharey": "maintain-suppress-time-timecourse"},
         
         {"name": "full-suppression-timecourse",
          "row": timecourse_row,
          "col": full_suppression_col,
-         "sharex": "mc-time-timecourse",
-         "sharey": "mc-time-timecourse"},
+         "sharex": "maintain-suppress-time-timecourse",
+         "sharey": "maintain-suppress-time-timecourse"},
 
-        {"name": "mc-time-b",
+        {"name": "maintain-suppress-time-b",
          "row": b_row,
          "col": opt_col,
-         "sharex": "mc-time-timecourse",
+         "sharex": "maintain-suppress-time-timecourse",
          "sharey": None},
         
         {"name": "fixed-b",
          "row": b_row,
          "col": fixed_col,
-         "sharex": "mc-time-b",
-         "sharey": "mc-time-b"},
+         "sharex": "maintain-suppress-time-b",
+         "sharey": "maintain-suppress-time-b"},
         
         {"name": "full-suppression-b",
          "row": b_row,
          "col": full_suppression_col,
-         "sharex": "mc-time-b",
-         "sharey": "mc-time-b"},
+         "sharex": "maintain-suppress-time-b",
+         "sharey": "maintain-suppress-time-b"},
 
         {"name": "imax",
          "row": imax_row,
          "col": imax_col,
          "sharex": None,
-         "sharey": "mc-time-timecourse"},
+         "sharey": "maintain-suppress-time-timecourse"},
 
         {"name": "ti",
          "row": ti_row,
@@ -149,7 +149,7 @@ def main(path_to_fixed,
                         lw = tau_crash_lw,
                         linestyle = "dotted")
 
-    for plotname in ["mc-time-timecourse",
+    for plotname in ["maintain-suppress-time-timecourse",
                      "fixed-timecourse",
                      "full-suppression-timecourse"]:
         plots[plotname].plot(null_time,
@@ -160,7 +160,7 @@ def main(path_to_fixed,
 
     ## calculate and plot intervention results
     for name, cmap in zip(
-            ["mc-time", "fixed", "full-suppression"],
+            ["maintain-suppress-time", "fixed", "full-suppression"],
             [ps.opt_cmap, ps.fixed_cmap, ps.full_suppression_cmap]):
         solids = [] # save solid b lines for plotting later
 
@@ -174,7 +174,7 @@ def main(path_to_fixed,
             S_i_expected = 0
             print("optimizing strategy for {} "
                   "with tau = {}".format(name, tau))
-            if name == "mc-time":
+            if name == "maintain-suppress-time":
                 S_i_expected, f = oi.calc_Sf_opt(
                     covid_sir.R0,
                     covid_sir.gamma * tau)
@@ -263,7 +263,7 @@ def main(path_to_fixed,
         taus_sweep = params.taus_sweep
         print("calculating and plotting t_i and I_max "
               "for strategy {}...\n".format(name))
-        if name == "mc-time":
+        if name == "maintain-suppress-time":
            Sfs = [oi.calc_Sf_opt(
                covid_sir.R0,
                covid_sir.gamma * tau)
@@ -307,28 +307,31 @@ def main(path_to_fixed,
     # ylim for 0 to 1 plots
     ymin = -0.1
     ymax = 1.1
-    plots["mc-time-timecourse"].legend(title = "$\\tau$ (days)",
-                                       handles = handlelines)
+    plots["maintain-suppress-time-timecourse"].legend(
+        title = "$\\tau$ (days)",
+        handles = handlelines)
 
-    plots["mc-time-timecourse"].set_ylabel("prevalence $I(t)$")
-    plots["mc-time-b"].set_ylabel("intervention $b(t)$")
-    plots["imax"].set_ylabel("peak $I^{\max}$",
+    plots["maintain-suppress-time-timecourse"].set_ylabel(
+        "prevalence $I(t)$")
+    plots["maintain-suppress-time-b"].set_ylabel(
+        "intervention $b(t)$")
+    plots["imax"].set_ylabel("peak prevalence $I^{\max}$",
                              rotation = 270,
-                             labelpad = 30)
+                             labelpad = 40)
     plots["ti"].set_xlabel("duration $\\tau$ (days)")
-    plots["ti"].set_ylabel("timing $t^{\mathrm{opt}}_i$",
+    plots["ti"].set_ylabel("optimal time $t^{\mathrm{opt}}_i$",
                            rotation = 270,
-                           labelpad = 30)
+                           labelpad = 45)
     plots["fixed-b"].set_xlabel("time (days)")
 
-    plots["mc-time-timecourse"].set_xlim(0, 300)
-    plots["mc-time-timecourse"].set_ylim(ps.ymin_timecourse,
+    plots["maintain-suppress-time-timecourse"].set_xlim(0, 300)
+    plots["maintain-suppress-time-timecourse"].set_ylim(ps.ymin_timecourse,
                                          ps.ymax_timecourse)
-    plots["mc-time-timecourse"].set_yticks(np.arange(0, 0.4, 0.1))
-    plots["mc-time-timecourse"].set_xticks(np.arange(0, 280,
+    plots["maintain-suppress-time-timecourse"].set_yticks(np.arange(0, 0.4, 0.1))
+    plots["maintain-suppress-time-timecourse"].set_xticks(np.arange(0, 280,
                                                      90))
-    plots["mc-time-b"].set_yticks(np.arange(0, 1.1, 0.25))
-    plots["mc-time-b"].set_ylim(ymin, ymax)
+    plots["maintain-suppress-time-b"].set_yticks(np.arange(0, 1.1, 0.25))
+    plots["maintain-suppress-time-b"].set_ylim(ymin, ymax)
     
     plots["imax"].set_xticks(np.arange(0, 120, 30))
     plots["imax"].set_xlim(0, 90)
@@ -338,7 +341,7 @@ def main(path_to_fixed,
 
 
     ## add some titles
-    plots["mc-time-timecourse"].set_title("Optimal")
+    plots["maintain-suppress-time-timecourse"].set_title("Optimal")
     plots["fixed-timecourse"].set_title("Fixed control")
     plots["full-suppression-timecourse"].set_title("Full suppression")
     plots["full-suppression-timecourse"].set_title("Full suppression")
@@ -354,6 +357,7 @@ def main(path_to_fixed,
             plot.yaxis.tick_right()
 
     fig.tight_layout()
+    fig.align_ylabels()
     fig.savefig(outpath)
 
 

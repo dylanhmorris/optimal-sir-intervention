@@ -21,15 +21,15 @@ taus_figure_interventions = [14, 28, 56]
 taus_sweep = np.linspace(0.5, 90, 90)
 sc_reduction = 0.75 # sustained control reduction in R0
 offsets_default = [7, -7, 0] # mistiming by +/- a week
-offsets_for_sweep = 10 # for sweep in the intervention figures
+offsets_for_sweep = 14 # for sweep in the heatmaps
 
 ## parameter sweeps for heatmaps
 heatmap_fineness = 100
 heatmap_taus = np.linspace(1, 90, heatmap_fineness)
 heatmap_gammas = np.linspace(0.01, 0.7, heatmap_fineness)
 heatmap_R0s = np.linspace(1.1, 5, heatmap_fineness)
-heatmap_offsets = np.linspace(-offsets_for_sweep,
-                              offsets_for_sweep,
+heatmap_offsets = np.linspace(-10,
+                              10,
                               heatmap_fineness)
 
 fixed_heatmap_fineness = 25

@@ -12,11 +12,11 @@ This repository accompanies the article "Optimal, near-optimal, and robust epide
 ## License and citation information
 If you use the code or data provided here, please make sure to do so in light of the project [license](LICENSE.txt) and please cite our work as below:
 
-- D.H. Morris, F.W. Rossine et al. Optimal, near-optimal, and robust epidemic control. *OSF preprint*. Mar 2020. DOI:[10.31219/osf.io/9gr7q](https://doi.org/10.31219/osf.io/9gr7q)
+- D.H. Morris, F.W. Rossine et al. Optimal, near-optimal, and robust epidemic control. 2020. https://arxiv.org/abs/2004.02209.
 
 Bibtex record:
 ```
-@article{morris2020optimal,
+@article{morris2021optimal,
     Author = {Morris, Dylan H. and
     Rossine, Fernando W. and 
     Plotkin, Joshua B. and
@@ -30,7 +30,7 @@ Bibtex record:
 ```
 
 ## Article abstract 
-The COVID-19 pandemic has highlighted the importance of epidemic peak reduction (``flattening the curve''). Here we find the optimal time-limited intervention for reducing peak epidemic prevalence in the standard Susceptible-Infectious-Recovered (SIR) model. We show that coarser, more realistic interventions can emulate and perform nearly as well as the provably optimal strategy. We then show that none of these strategies are robust to timing errors. Sustained control measures, though less efficient than optimal and near-optimal time-limited interventions, are needed to mitigate the catastrophic risks of mistiming.
+In the absence of drugs and vaccines, policymakers use non-pharmaceutical interventions such as social distancing to decrease rates of disease-causing contact, with the aim of reducing or delaying the epidemic peak. These measures carry social and economic costs, so societies may be unable to maintain them for more than a short period of time. Intervention policy design often relies on numerical simulations of epidemic models, but comparing policies and assessing their robustness demands clear principles that apply across strategies. Here we derive the theoretically optimal strategy for using a time-limited intervention to reduce the peak prevalence of a novel disease in the classic Susceptible-Infectious-Recovered epidemic model. We show that broad classes of easier-to-implement strategies can perform nearly as well as the theoretically optimal strategy. But neither the optimal strategy nor any of these near-optimal strategies is robust to implementation error: small errors in timing the intervention produce large increases in peak prevalence. Our results reveal fundamental principles of non-pharmaceutical disease control and expose their potential fragility. For robust control, an intervention must be strong, early, and ideally sustained.
 
 ## Directories
 - ``src``: all code, including numerics and figure generation:

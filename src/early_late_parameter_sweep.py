@@ -31,7 +31,7 @@ def sweep_tau_early_late(
         R0s,
         offset,
         sir_model,
-        strategy = "mc-time",
+        strategy = "maintain-suppress-time",
         t_sim_max = 1000):
 
     sir_model.inits = params.inits_sweep_small
@@ -49,7 +49,7 @@ def sweep_tau_early_late(
             sir_model.R0 = R0
             S_i_expected = 0
             
-            if strategy == "mc-time":
+            if strategy == "maintain-suppress-time":
                 S_i_expected, f = oi.calc_Sf_opt(
                     sir_model.R0,
                     sir_model.gamma * tau)
@@ -98,7 +98,7 @@ def sweep_gamma_early_late(
         offset,
         tau,
         sir_model,
-        strategy = "mc-time",
+        strategy = "maintain-suppress-time",
         t_sim_normed = 500 / 14):
 
     results = np.zeros(len(gammas) * len(R0s)).reshape(
@@ -125,7 +125,7 @@ def sweep_gamma_early_late(
             sir_model.R0 = R0
             S_i_expected = 0
         
-            if strategy == "mc-time":
+            if strategy == "maintain-suppress-time":
                 S_i_expected, f = oi.calc_Sf_opt(
                     sir_model.R0,
                     sir_model.gamma * sir_model.b_func.tau)

@@ -29,7 +29,7 @@ def sweep_tau_offset(
         taus,
         offsets,
         sir_model,
-        strategy = "mc-time",
+        strategy = "maintain-suppress-time",
         t_sim_max = 1000):
 
     results = np.zeros(len(taus) * len(offsets)).reshape(
@@ -42,7 +42,7 @@ def sweep_tau_offset(
         sir_model.b_func.tau = tau
         S_i_expected = 0
         
-        if strategy == "mc-time":
+        if strategy == "maintain-suppress-time":
             S_i_expected, f = oi.calc_Sf_opt(
                 sir_model.R0,
                 sir_model.gamma * tau)
@@ -82,7 +82,7 @@ def sweep_gamma_offset(
         offsets,
         tau,
         sir_model,
-        strategy = "mc-time",
+        strategy = "maintain-suppress-time",
         t_sim_normed = 400 / 14):
 
     results = np.zeros(len(gammas) * len(offsets)).reshape(
@@ -105,7 +105,7 @@ def sweep_gamma_offset(
         sir_model.gamma = gamma
         S_i_expected = 0
         
-        if strategy == "mc-time":
+        if strategy == "maintain-suppress-time":
             S_i_expected, f = oi.calc_Sf_opt(
                 sir_model.R0,
                 sir_model.gamma * tau)

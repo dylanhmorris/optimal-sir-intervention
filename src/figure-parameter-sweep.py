@@ -205,7 +205,7 @@ def main(tau_offset_path,
     plots["early-late-gamma"].xaxis.set_major_formatter(
         FormatStrFormatter('$%g$'))
     plots["early-late-gamma"].set_xlabel(
-        "recovery rate $\gamma$")
+        "recovery rate $\gamma$ (days$^{-1}$)")
     
     plots["offset-vs-tau"].set_yticks(np.arange(-10, 11, 5))
     plots["offset-vs-gamma"].set_yticks(np.arange(-10, 11, 5))
@@ -218,7 +218,7 @@ def main(tau_offset_path,
         np.arange(0, max_tau_el + 10, 30))
     
     plots["early-late-tau"].set_xlabel(
-        "duration $\\tau$")
+        "duration $\\tau$ (days)")
     cb_os = fig.colorbar(
         os_gamma,
         cax = plots["offset-cbar"])
@@ -227,7 +227,7 @@ def main(tau_offset_path,
         cax = plots["early-late-cbar"])
     cb_os.outline.set_visible(False)
     cb_el.outline.set_visible(False)
-    plots["offset-cbar"].set_ylabel("peak $I^{\max}$",
+    plots["offset-cbar"].set_ylabel("peak prevalance $I^{\max}$",
                                     rotation = 270,
                                     labelpad = 40)
     plots["early-late-cbar"].set_ylabel("Asymmetry ($I^{\max}$ "
@@ -240,6 +240,7 @@ def main(tau_offset_path,
         plot.grid(b = False)
     
     fig.tight_layout()
+    fig.align_ylabels()
     fig.savefig(outpath)
 
 

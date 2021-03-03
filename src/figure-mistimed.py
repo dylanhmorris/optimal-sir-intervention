@@ -64,7 +64,7 @@ def setup_figure():
     
     
     plot_positions = [
-        {"name": "mc-time-alone",
+        {"name": "maintain-suppress-time-alone",
          "row": opt_row,
          "col": alone_col,
          "sharex": None,
@@ -73,50 +73,50 @@ def setup_figure():
         {"name": "fixed-alone",
          "row": fixed_row,
          "col": alone_col,
-         "sharex": "mc-time-alone",
-         "sharey": "mc-time-alone"},
+         "sharex": "maintain-suppress-time-alone",
+         "sharey": "maintain-suppress-time-alone"},
         
         {"name": "full-suppression-alone",
          "row": full_suppression_row,
          "col": alone_col,
-         "sharex": "mc-time-alone",
-         "sharey": "mc-time-alone"},
+         "sharex": "maintain-suppress-time-alone",
+         "sharey": "maintain-suppress-time-alone"},
 
-        {"name": "mc-time-sc",
+        {"name": "maintain-suppress-time-sc",
          "row": opt_row,
          "col": sc_col,
-         "sharex": "mc-time-alone",
-         "sharey": "mc-time-alone"},
+         "sharex": "maintain-suppress-time-alone",
+         "sharey": "maintain-suppress-time-alone"},
         
         {"name": "fixed-sc",
          "row": fixed_row,
          "col": sc_col,
-         "sharex": "mc-time-sc",
-         "sharey": "mc-time-sc"},
+         "sharex": "maintain-suppress-time-sc",
+         "sharey": "maintain-suppress-time-sc"},
         
         {"name": "full-suppression-sc",
          "row": full_suppression_row,
          "col": sc_col,
-         "sharex": "mc-time-sc",
-         "sharey": "mc-time-sc"},
+         "sharex": "maintain-suppress-time-sc",
+         "sharey": "maintain-suppress-time-sc"},
 
-        {"name": "mc-time-vs-sc",
+        {"name": "maintain-suppress-time-vs-sc",
          "row": opt_row,
          "col": vs_sc_col,
          "sharex": None,
-         "sharey": "mc-time-alone"},
+         "sharey": "maintain-suppress-time-alone"},
         
         {"name": "fixed-vs-sc",
          "row": fixed_row,
          "col": vs_sc_col,
-         "sharex": "mc-time-vs-sc",
-         "sharey": "mc-time-vs-sc"},
+         "sharex": "maintain-suppress-time-vs-sc",
+         "sharey": "maintain-suppress-time-vs-sc"},
         
         {"name": "full-suppression-vs-sc",
          "row": full_suppression_row,
          "col": vs_sc_col,
-         "sharex": "mc-time-vs-sc",
-         "sharey": "mc-time-vs-sc"}
+         "sharex": "maintain-suppress-time-vs-sc",
+         "sharey": "maintain-suppress-time-vs-sc"}
     ]
 
     plots = ps.setup_multipanel(figure,
@@ -132,7 +132,7 @@ def calc_offset_sweep(
         t_sim_max,
         offset = params.offsets_for_sweep,
         offsets = None,
-        strategy = "mc-time",
+        strategy = "maintain-suppress-time",
         fineness = 25):
     results = []
 
@@ -144,7 +144,7 @@ def calc_offset_sweep(
         offsets = np.linspace(-offset,
                               offset,
                               fineness)
-    if strategy == "mc-time":
+    if strategy == "maintain-suppress-time":
         S_i_expected, f = oi.calc_Sf_opt(
             sir_model.R0,
             sir_model.gamma * tau)
@@ -189,14 +189,14 @@ def main(outpath,
     handlelines = []
     sc_handlelines = []
     leg_cmap = plt.cm.Greys
-    offset_labels = ["week late", "week early", "mc-time time"]
+    offset_labels = ["week late", "week early", "optimal time"]
 
     sc_style = "solid"
     
     ## set up legend
     color_vals = {
         "week early": 0.25,
-        "mc-time time": 0.5,
+        "optimal time": 0.5,
         "week late": 0.75}
 
     handlelines.append(
@@ -207,7 +207,7 @@ def main(outpath,
                       label = "no intervention"))
 
     for offset_type in ["week early",
-                        "mc-time time",
+                        "optimal time",
                         "week late"]:
         
         color_val = color_vals.get(offset_type, 0)
@@ -225,7 +225,7 @@ def main(outpath,
                       label = "sustained control\nonly"))
 
     ## plot dashed no control / sc only lines 
-    for plotname in ["mc-time-alone",
+    for plotname in ["maintain-suppress-time-alone",
                      "fixed-alone",
                      "full-suppression-alone"]:
         plots[plotname].plot(null_time,
@@ -234,7 +234,7 @@ def main(outpath,
                              ls = null_style,
                              dashes = null_dashes)
 
-    for plotname in ["mc-time-sc",
+    for plotname in ["maintain-suppress-time-sc",
                      "fixed-sc",
                      "full-suppression-sc"]:
         plots[plotname].plot(null_sc_time,
@@ -247,11 +247,11 @@ def main(outpath,
     for sir_model, suffix in zip([covid_sir, covid_sc_sir],
                                  ["-alone", "-sc"]):
         sir_model.b_func.tau = tau
-        for strategy in ["mc-time", "fixed", "full-suppression"]:
+        for strategy in ["maintain-suppress-time", "fixed", "full-suppression"]:
             sir_model.b_func.strategy = strategy
             S_i_expected = 0
         
-            if strategy == "mc-time":
+            if strategy == "maintain-suppress-time":
                 S_i_expected, f = oi.calc_Sf_opt(
                     sir_model.R0,
                     sir_model.gamma * tau)
@@ -293,8 +293,8 @@ def main(outpath,
             pass
         pass
     
-    plots["mc-time-alone"].set_xlim(0, 300)
-    plots["mc-time-alone"].legend(
+    plots["maintain-suppress-time-alone"].set_xlim(0, 300)
+    plots["maintain-suppress-time-alone"].legend(
         handles = handlelines,
         frameon = True,
         fancybox = True,
@@ -302,7 +302,7 @@ def main(outpath,
         labelspacing = 0.25,
         handlelength = 0.75,
         loc = (0.55, 0.55))
-    plots["mc-time-sc"].legend(
+    plots["maintain-suppress-time-sc"].legend(
         handles = sc_handlelines,
         frameon = True,
         fancybox = True,
@@ -313,7 +313,7 @@ def main(outpath,
 
 
     sweep_results = {}
-    for strategy in ["mc-time", "fixed", "full-suppression"]:
+    for strategy in ["maintain-suppress-time", "fixed", "full-suppression"]:
         plotname_vs_sc = strategy + "-vs-sc"
         alone_varname = strategy + "-sweep-alone"
         sc_varname = strategy + "-sweep-sc"
@@ -363,11 +363,11 @@ def main(outpath,
                                        params.offsets_for_sweep)
 
 
-    plots["mc-time-alone"].set_xlim(0, 300)
-    plots["mc-time-alone"].set_ylim(ps.ymin_timecourse,
+    plots["maintain-suppress-time-alone"].set_xlim(0, 300)
+    plots["maintain-suppress-time-alone"].set_ylim(ps.ymin_timecourse,
                                     ps.ymax_timecourse)
-    plots["mc-time-alone"].set_yticks(np.arange(0, 0.4, 0.1))
-    plots["mc-time-alone"].set_xticks(np.arange(0, 280, 90))
+    plots["maintain-suppress-time-alone"].set_yticks(np.arange(0, 0.4, 0.1))
+    plots["maintain-suppress-time-alone"].set_xticks(np.arange(0, 280, 90))
 
     for plotname, plot in plots.items():
         if "-vs-sc" not in plotname:
@@ -381,15 +381,16 @@ def main(outpath,
     plots["full-suppression-alone"].set_xlabel("time (days)")
     plots["full-suppression-sc"].set_xlabel("time (days)")
     plots["full-suppression-vs-sc"].set_xlabel("offset from $t_i^{\mathrm{opt}}$ (days)")
-    plots["fixed-vs-sc"].set_ylabel("peak $I^{\max}$",
+    plots["fixed-vs-sc"].set_ylabel("peak prevalence $I^{\max}$",
                                     rotation = 270,
                                     labelpad = 30)
 
-    plots["mc-time-alone"].set_title("Time-limited")
-    plots["mc-time-sc"].set_title("Sustained")
-    plots["mc-time-vs-sc"].set_title("Costs of mistiming")
+    plots["maintain-suppress-time-alone"].set_title("Time-limited")
+    plots["maintain-suppress-time-sc"].set_title("Sustained")
+    plots["maintain-suppress-time-vs-sc"].set_title("Costs of mistiming")
 
     fig.tight_layout()
+    fig.align_ylabels()
     fig.savefig(outpath)
 
 

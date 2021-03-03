@@ -17,8 +17,8 @@
 #######################################
 
 RM = rm -f
-MKDIR = mkdir -p
-
+MKDIR = @mkdir -p
+CP = @cp
 ##################################
 # directory structure
 ##################################
@@ -27,6 +27,8 @@ OUTPUT = out
 SRC = src
 RESULTS = $(OUTPUT)/results
 FIGURES = $(OUTPUT)/figures
+MS = ms
+MSFIGS = $(MS)/figures
 
 ##################################
 # file formats
@@ -69,8 +71,9 @@ PLOT_DEPS = $(PLOTTING_STYLE) $(NUMERICS)
 
 
 ## figure targets
-FIGURE_NAMES = figure-interventions.$(FIGEXT) figure-mistimed.$(FIGEXT) figure-parameter-sweep.$(FIGEXT) figure-parameter-sweep-fixed.$(FIGEXT) figure-f-sigma-of-tau.$(FIGEXT)
+FIGURE_NAMES = figure-interventions.$(FIGEXT) figure-mistimed.$(FIGEXT) figure-parameter-sweep.$(FIGEXT) figure-f-sigma-of-tau.$(FIGEXT)
 FIGURE_PATHS = $(addprefix $(FIGURES)/, $(FIGURE_NAMES))
+MS_FIGURE_PATHS = $(addprefix $(MSFIGS)/, $(FIGURE_NAMES))
 
 ## output targets
 TAU_SWEEP = $(RESULTS)/tau_sweep_default_params.csv
@@ -80,66 +83,72 @@ GAMMA_TOFFSET_SWEEP = $(RESULTS)/toffset_gamma_sweep.csv
 TAU_EARLY_LATE_SWEEP = $(RESULTS)/early_late_tau_sweep.csv
 GAMMA_EARLY_LATE_SWEEP = $(RESULTS)/early_late_gamma_sweep.csv
 
-TAU_TOFFSET_SWEEP_FIXED = $(RESULTS)/toffset_tau_sweep_fixed.csv
-GAMMA_TOFFSET_SWEEP_FIXED = $(RESULTS)/toffset_gamma_sweep_fixed.csv
-TAU_EARLY_LATE_SWEEP_FIXED = $(RESULTS)/early_late_tau_sweep_fixed.csv
-GAMMA_EARLY_LATE_SWEEP_FIXED = $(RESULTS)/early_late_gamma_sweep_fixed.csv
-
-HEATMAP_MC_SWEEPS = $(TAU_TOFFSET_SWEEP) $(GAMMA_TOFFSET_SWEEP) $(TAU_EARLY_LATE_SWEEP) $(GAMMA_EARLY_LATE_SWEEP)
-
-HEATMAP_FIXED_SWEEPS = $(TAU_TOFFSET_SWEEP_FIXED) $(GAMMA_TOFFSET_SWEEP_FIXED) $(TAU_EARLY_LATE_SWEEP_FIXED) $(GAMMA_EARLY_LATE_SWEEP_FIXED)
+HEATMAP_OPT_SWEEPS = $(TAU_TOFFSET_SWEEP) $(GAMMA_TOFFSET_SWEEP) $(TAU_EARLY_LATE_SWEEP) $(GAMMA_EARLY_LATE_SWEEP)
 
 ###################################
 # Rules for output
 ###################################
 $(FIGURES)/%.$(FIGEXT): $(SRC)/%.$(SRCEXT) $(PLOT_DEPS)
+	$(MKDIR) $(FIGURES)
 	./$< $@
 
 $(FIGURES)/figure-interventions.$(FIGEXT): $(SRC)/figure-interventions.$(SRCEXT) $(TAU_SWEEP) $(PLOT_DEPS)
+	$(MKDIR) $(FIGURES)
 	./$< $(TAU_SWEEP) $@
 
 $(FIGURES)/figure-f-sigma-of-tau.$(FIGEXT): $(SRC)/figure-f-sigma-of-tau.$(SRCEXT) $(TAU_SWEEP) $(PLOT_DEPS)
+	$(MKDIR) $(FIGURES)
 	./$< $(TAU_SWEEP) $@
 
-$(FIGURES)/figure-parameter-sweep.$(FIGEXT): $(SRC)/figure-parameter-sweep.$(SRCEXT) $(HEATMAP_MC_SWEEPS) $(PLOT_DEPS)
-	./$< $(HEATMAP_MC_SWEEPS) $@
+$(FIGURES)/figure-parameter-sweep.$(FIGEXT): $(SRC)/figure-parameter-sweep.$(SRCEXT) $(HEATMAP_OPT_SWEEPS) $(PLOT_DEPS)
+	$(MKDIR) $(FIGURES)
+	./$< $(HEATMAP_OPT_SWEEPS) $@
 
-$(FIGURES)/figure-parameter-sweep-fixed.$(FIGEXT): $(SRC)/figure-parameter-sweep.$(SRCEXT) $(HEATMAP_FIXED_SWEEPS) $(PLOT_DEPS)
-	./$< $(HEATMAP_FIXED_SWEEPS) $@
+$(MSFIGS)/%.$(FIGEXT): $(FIGURES)/%.$(FIGEXT)
+	$(MKDIR) $(MSFIGS)
+	$(CP) $< $@
 
 $(TAU_SWEEP): $(TAU_SWEEP_RUNNER) $(NUMERICS)
+	$(MKDIR) $(RESULTS)
 	./$< $@
 
 $(GAMMA_TOFFSET_SWEEP): $(TOFFSET_SWEEP_RUNNER) $(NUMERICS)
-	./$< gamma mc-time $@
+	$(MKDIR) $(RESULTS)
+	./$< gamma maintain-suppress-time $@
 
 $(TAU_TOFFSET_SWEEP): $(TOFFSET_SWEEP_RUNNER) $(NUMERICS)
-	./$< tau mc-time $@
+	$(MKDIR) $(RESULTS)
+	./$< tau maintain-suppress-time $@
 
 $(GAMMA_EARLY_LATE_SWEEP): $(EARLY_LATE_SWEEP_RUNNER) $(NUMERICS)
-	./$< gamma mc-time $@
+	$(MKDIR) $(RESULTS)
+	./$< gamma maintain-suppress-time $@
 
 $(TAU_EARLY_LATE_SWEEP): $(EARLY_LATE_SWEEP_RUNNER) $(NUMERICS)
-	./$< tau mc-time $@
+	$(MKDIR) $(RESULTS)
+	./$< tau maintain-suppress-time $@
 
 $(GAMMA_TOFFSET_SWEEP_FIXED): $(TOFFSET_SWEEP_RUNNER) $(NUMERICS)
+	$(MKDIR) $(RESULTS)
 	./$< gamma fixed $@
 
 $(TAU_TOFFSET_SWEEP_FIXED): $(TOFFSET_SWEEP_RUNNER) $(NUMERICS)
+	$(MKDIR) $(RESULTS)
 	./$< tau fixed $@
 
 $(GAMMA_EARLY_LATE_SWEEP_FIXED): $(EARLY_LATE_SWEEP_RUNNER) $(NUMERICS)
+	$(MKDIR) $(RESULTS)
 	./$< gamma fixed $@
 
 $(TAU_EARLY_LATE_SWEEP_FIXED): $(EARLY_LATE_SWEEP_RUNNER) $(NUMERICS)
+	$(MKDIR) $(RESULTS)
 	./$< tau fixed $@
 
 .PHONY: results
-results: $(TAU_SWEEP) $(HEATMAP_MC_SWEEPS) $(HEATMAP_FIXED_SWEEPS)
+results: $(TAU_SWEEP) $(HEATMAP_OPT_SWEEPS) $(HEATMAP_FIXED_SWEEPS)
 
 .PHONY: figures
-figures: $(FIGURE_PATHS)
-
+figures: $(FIGURE_PATHS) $(MS_FIGURE_PATHS)
 
 
 .PHONY: clean rmtemp

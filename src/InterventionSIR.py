@@ -117,7 +117,7 @@ class InterventionSIR():
             "increase integration "
             "max time. If this was expected, "
             "set allow_boundary_max = True")
-        fist_timestep_error = (
+        first_timestep_error = (
             "Max at first timestep. "
             "Your model may be misspecified. "
             "If this was expected, "
